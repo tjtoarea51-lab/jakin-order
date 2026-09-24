@@ -456,3 +456,37 @@
   </script>
 </body>
 </html>
+// ใส่ URL ที่ได้จาก Apps Script
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF39u4W2aKQSTw5BE5c6k7cPXKnVISVJokCkr2saRISWcW0fgvYKKQeKyGqR6iq7A-/exec";
+
+// ฟังก์ชันสำหรับส่งข้อมูลเมื่อลูกค้ากดยืนยันสั่งซื้อ
+async function sendOrderToSheets(order) {
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8" // จำเป็นต้องใช้ text/plain เพื่อไม่ให้ติดปัญหา CORS
+      },
+      body: JSON.stringify({
+        customerName: order.name,        // ชื่อลูกค้า / Display Name ใน LINE
+        deliveryArea: order.area,        // พื้นที่จัดส่ง (เช่น หอพัก มข.)
+        itemsSummary: order.summary,     // รายการอาหารและท็อปปิ้ง
+        totalAmount: order.totalPrice,   // ยอดรวม (ตัวเลข เช่น 79)
+        paymentMethod: order.payment,    // เช่น โอนเงิน / เงินสด
+        paymentStatus: "รอตรวจสอบ",
+        orderStatus: "กำลังปรุง",
+        userId: order.userId || "",      // LINE User ID (ถ้ามี)
+        note: order.note || ""           // หมายเหตุเพิ่มเติม
+      })
+    });
+
+    const result = await response.json();
+    if (result.status === "success") {
+      alert("สั่งซื้อสำเร็จ! รหัสออเดอร์: " + result.orderId);
+      // สามารถสั่ง liff.closeWindow() หรือ redirect ไปหน้าขอบคุณได้ที่นี่
+    }
+  } catch (error) {
+    console.error("ส่งออเดอร์ไม่สำเร็จ:", error);
+    alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
+  }
+}
