@@ -490,3 +490,36 @@ async function sendOrderToSheets(order) {
     alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
   }
 }
+// หลังจากยิงเข้า Google Sheets (fetch SCRIPT_URL) สำเร็จ
+fetch(SCRIPT_URL, {
+  method: "POST",
+  headers: { "Content-Type": "text/plain;charset=utf-8" },
+  body: JSON.stringify(orderData)
+})
+.then(res => res.json())
+.then(result => {
+  if (result.status === "success") {
+    // 💬 สั่งส่งข้อความสรุปออเดอร์เข้าห้องแชทของลูกค้าทันที
+    if (liff.isInClient()) {
+      liff.sendMessages([
+        {
+          type: "text",
+          text: `🧾 รับออเดอร์เรียบร้อยแล้วค่ะ!\n` +
+                `รหัสออเดอร์: ${result.orderId}\n` +
+                `รายการ: ${orderData.itemsSummary}\n` +
+                `ยอดรวม: ฿${orderData.totalAmount}\n` +
+                `พื้นที่จัดส่ง: ${orderData.deliveryArea}\n` +
+                `สถานะ: กำลังเตรียมจัดส่ง`
+        }
+      ]).then(() => {
+        // เมื่อส่งข้อความเข้าแชทแล้ว สั่งปิดหน้าต่าง LIFF ทันที
+        liff.closeWindow();
+      }).catch(err => {
+        console.error("ส่งข้อความเข้าแชทไม่สำเร็จ:", err);
+        liff.closeWindow();
+      });
+    } else {
+      alert("บันทึกออเดอร์เรียบร้อยแล้ว! รหัส: " + result.orderId);
+    }
+  }
+});
