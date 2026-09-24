@@ -3,164 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ร้าน JAKiN — สั่งซื้อออนไลน์</title>
+  <title>JAKiN - จากิน</title>
   <!-- LINE LIFF SDK -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
+    :root {
+      --blue: #002B7F;
+      --cream: #FFFDF7;
+      --yellow: #F4C430;
+      --text: #1E293B;
+      --gray: #64748B;
+    }
     * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #F0F4F8; margin: 0; padding: 16px; color: #1E293B; }
-    .header { text-align: center; margin-bottom: 18px; }
-    .header h2 { margin: 4px 0; color: #1D4ED8; font-size: 24px; font-weight: 800; }
-    .sub-title { font-size: 13px; color: #64748B; margin-bottom: 6px; }
-    .badge-free { background: #DBEAFE; color: #1E40AF; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 700; display: inline-block; }
-    .card { background: #FFFFFF; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.05); border: 1px solid #E2E8F0; }
-    .card-title { font-weight: 700; font-size: 15px; margin-bottom: 12px; color: #0F172A; border-left: 4px solid #2563EB; padding-left: 10px; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #F1F5F9; }
-    .item-row:last-child { border-bottom: none; }
-    .item-name { font-size: 14px; font-weight: 600; color: #334155; }
-    .item-price { font-size: 14px; color: #2563EB; font-weight: 700; margin-top: 2px; }
-    .qty-controls { display: flex; align-items: center; }
-    .qty-btn { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 8px; width: 30px; height: 30px; font-size: 18px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
-    .qty-btn:active { background: #DBEAFE; transform: scale(0.95); }
-    .qty-num { margin: 0 12px; font-weight: 700; font-size: 15px; min-width: 14px; text-align: center; }
-    label { font-size: 13px; font-weight: 600; color: #475569; display: block; margin-top: 10px; }
-    select, textarea, input[type="text"] { width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 14px; margin-top: 6px; outline: none; background: #FFFFFF; }
-    select:focus, textarea:focus, input[type="text"]:focus { border-color: #2563EB; }
-    .summary-bar { background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%); color: #FFFFFF; border-radius: 16px; padding: 18px; text-align: center; margin-top: 18px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25); }
-    .total-title { font-size: 13px; opacity: 0.9; }
-    .total-price { font-size: 28px; font-weight: 800; margin: 4px 0 14px 0; }
-    .submit-btn { background: #FFFFFF; color: #1D4ED8; border: none; width: 100%; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.08); }
-    .submit-btn:disabled { background: #94A3B8; color: #E2E8F0; cursor: not-allowed; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--cream); margin: 0; padding: 0; color: var(--text); padding-bottom: 120px; }
+    
+    .header { background: var(--blue); color: white; padding: 28px 16px 20px; text-align: center; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; box-shadow: 0 4px 15px rgba(0,43,127,0.15); }
+    .header h1 { margin: 0; font-size: 38px; font-weight: 900; letter-spacing: 1px; }
+    .header p { margin: 6px 0 0 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--yellow); }
+    
+    .container { padding: 16px; }
+    .section-title { font-size: 18px; font-weight: 800; margin: 24px 0 12px; color: var(--blue); border-left: 4px solid var(--yellow); padding-left: 10px; }
+    
+    .menu-card { background: white; border-radius: 16px; padding: 12px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #F1F5F9; }
+    .menu-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; background: #E2E8F0; flex-shrink: 0; }
+    .menu-info { flex: 1; }
+    .menu-name { font-size: 15px; font-weight: 700; color: var(--blue); line-height: 1.3; }
+    .menu-price { font-size: 15px; font-weight: 800; color: #E53935; margin-top: 6px; display: inline-block; background: #FEF2F2; padding: 2px 8px; border-radius: 8px; }
+    .add-btn { background: var(--blue); color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .add-btn:active { transform: scale(0.95); }
+
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100; align-items: flex-end; }
+    .modal { background: white; width: 100%; max-height: 85vh; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 20px; overflow-y: auto; padding-bottom: 80px; animation: slideUp 0.3s ease-out; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; padding-bottom: 14px; margin-bottom: 16px; position: sticky; top: -20px; background: white; z-index: 10; }
+    .modal-title { font-size: 18px; font-weight: 800; color: var(--blue); }
+    .close-btn { background: #F1F5F9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 20px; font-weight: bold; color: var(--gray); cursor: pointer; }
+    
+    .opt-group { margin-bottom: 24px; }
+    .opt-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; justify-content: space-between; color: var(--text); background: #F8FAFC; padding: 8px 12px; border-radius: 8px; }
+    .opt-req { font-size: 12px; color: #E53935; font-weight: normal; }
+    .opt-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid #F1F5F9; font-size: 14px; font-weight: 600; color: #475569; }
+    input[type="checkbox"], input[type="radio"] { accent-color: var(--blue); width: 20px; height: 20px; }
+    input[type="checkbox"]:disabled { filter: grayscale(1); opacity: 0.6; }
+    
+    .modal-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 16px; border-top: 1px solid #E2E8F0; box-shadow: 0 -4px 12px rgba(0,0,0,0.05); }
+    .add-to-cart-btn { background: var(--blue); color: white; width: 100%; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 800; border: none; cursor: pointer; }
+
+    .cart-box { background: white; border-radius: 16px; padding: 16px; margin-top: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid var(--blue); }
+    .cart-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #CBD5E1; }
+    .cart-item-info { flex: 1; padding-right: 12px; }
+    .cart-item-name { font-weight: 800; font-size: 14px; color: var(--blue); }
+    .cart-item-opts { font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+    .cart-item-price { font-weight: 800; color: #E53935; text-align: right; }
+    .remove-btn { color: var(--gray); background: #F1F5F9; border: none; font-size: 11px; padding: 4px 8px; border-radius: 6px; margin-top: 6px; cursor: pointer; font-weight: bold; }
+
+    label { font-size: 13px; font-weight: 800; color: var(--blue); display: block; margin-top: 20px; margin-bottom: 8px; }
+    input[type="text"], select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid #CBD5E1; font-family: inherit; font-size: 14px; background: #F8FAFC; outline: none; }
+    input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--blue); background: white; }
+    
+    .total-bar { margin-top: 24px; background: var(--blue); color: white; padding: 24px 16px; border-radius: 16px; text-align: center; }
+    .total-price { font-size: 32px; font-weight: 900; margin: 8px 0 20px; color: var(--yellow); }
+    .submit-btn { background: var(--yellow); color: var(--blue); width: 100%; padding: 16px; border-radius: 14px; font-weight: 900; font-size: 16px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(244, 196, 48, 0.3); }
+    .submit-btn:disabled { background: #CBD5E1; color: white; cursor: not-allowed; box-shadow: none; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h2>ร้าน JAKiN</h2>
-    <div class="sub-title">Greek Yogurt & Smoothies Delivery</div>
-    <span class="badge-free">ฟรีน้ำผึ้งทุกออเดอร์กรีกโยเกิร์ต</span>
+    <h1>JAKiN</h1>
+    <p>Greek Yogurt and Smoothies</p>
   </div>
 
-  <!-- หมวดเมนูสินค้า -->
-  <div class="card">
-    <div class="card-title">เลือกรายการเมนู</div>
-    
-    <div class="item-row">
-      <div>
-        <div class="item-name">เซ็ตสุดคุ้ม (กรีก 2 สกูป + ท็อปปิ้ง 2 อย่าง)</div>
-        <div class="item-price">฿99</div>
-      </div>
-      <div class="qty-controls">
-        <button type="button" class="qty-btn" onclick="updateQty('item_set', -1)">-</button>
-        <span class="qty-num" id="qty_item_set">0</span>
-        <button type="button" class="qty-btn" onclick="updateQty('item_set', 1)">+</button>
-      </div>
-    </div>
+  <div class="container">
+    <div class="section-title">เมนูกรีกโยเกิร์ต</div>
+    <div id="yogurtMenuContainer"></div>
 
-    <div class="item-row">
-      <div>
-        <div class="item-name">กรีกโยเกิร์ตโบวล์ (เลือกผลไม้ได้ 3 อย่าง)</div>
-        <div class="item-price">฿59</div>
-      </div>
-      <div class="qty-controls">
-        <button type="button" class="qty-btn" onclick="updateQty('item_bowl', -1)">-</button>
-        <span class="qty-num" id="qty_item_bowl">0</span>
-        <button type="button" class="qty-btn" onclick="updateQty('item_bowl', 1)">+</button>
-      </div>
-    </div>
+    <div class="section-title">เมนูสมูทตี้และเครื่องดื่ม</div>
+    <div id="drinkMenuContainer"></div>
 
-    <div class="item-row">
-      <div>
-        <div class="item-name">Biscoff Fresh (กรีกบิสคอฟ)</div>
-        <div class="item-price">฿89</div>
-      </div>
-      <div class="qty-controls">
-        <button type="button" class="qty-btn" onclick="updateQty('item_biscoff', -1)">-</button>
-        <span class="qty-num" id="qty_item_biscoff">0</span>
-        <button type="button" class="qty-btn" onclick="updateQty('item_biscoff', 1)">+</button>
-      </div>
-    </div>
+    <div class="cart-box" id="cartSection" style="display:none;">
+      <div class="section-title" style="margin-top:0; border-left-color: var(--blue);">ตะกร้าของคุณ</div>
+      <div id="cartList"></div>
+      
+      <label>ชื่อลูกค้า / ชื่อไลน์:</label>
+      <input type="text" id="custNameInput" placeholder="ระบุชื่อเรียกหรือชื่อไลน์">
 
-    <div class="item-row">
-      <div>
-        <div class="item-name">โรลกรีกสอดไส้ผลไม้</div>
-        <div class="item-price">฿79</div>
-      </div>
-      <div class="qty-controls">
-        <button type="button" class="qty-btn" onclick="updateQty('item_roll', -1)">-</button>
-        <span class="qty-num" id="qty_item_roll">0</span>
-        <button type="button" class="qty-btn" onclick="updateQty('item_roll', 1)">+</button>
-      </div>
-    </div>
+      <label>เลือกพื้นที่จัดส่ง:</label>
+      <select id="deliveryZone" onchange="renderCart()">
+        <option value="Plum Condo (เฟส 1-3)" data-fee="0">Plum Condo เฟส 1-3 (ส่งป้อมยาม) — ส่งฟรี</option>
+        <option value="Fresh Alive" data-fee="0">Fresh Alive (ส่งใต้ตึก) — ส่งฟรี</option>
+        <option value="ซอยภิรมย์" data-fee="20">ซอยภิรมย์ (+20฿ / สั่ง 2 แก้ว/ถ้วย ส่งฟรี)</option>
+        <option value="Be Condo" data-fee="20">Be Condo (+20฿ / สั่ง 2 แก้ว/ถ้วย ส่งฟรี)</option>
+        <option value="Kave Condo" data-fee="20">Kave Condo (+20฿ / สั่ง 2 แก้ว/ถ้วย ส่งฟรี)</option>
+        <option value="ในมอกรุงเทพ" data-fee="20">ในมอกรุงเทพ (+20฿ / สั่ง 2 แก้ว/ถ้วย ส่งฟรี)</option>
+        <option value="Golf Zoom" data-fee="20">Golf Zoom (+20฿ / สั่ง 2 แก้ว/ถ้วย ส่งฟรี)</option>
+        <option value="พื้นที่อื่น" data-fee="30">พื้นที่อื่น (เริ่มต้น 30฿)</option>
+      </select>
 
-    <div class="item-row">
-      <div>
-        <div class="item-name">Strawberry Yogurt Smoothie</div>
-        <div class="item-price">฿59</div>
-      </div>
-      <div class="qty-controls">
-        <button type="button" class="qty-btn" onclick="updateQty('item_smoothie', -1)">-</button>
-        <span class="qty-num" id="qty_item_smoothie">0</span>
-        <button type="button" class="qty-btn" onclick="updateQty('item_smoothie', 1)">+</button>
-      </div>
-    </div>
+      <label>รายละเอียดที่อยู่เพิ่มเติม (ตึก/ชั้น/ห้อง):</label>
+      <textarea id="orderNote" rows="2" placeholder="เช่น ตึก B ห้อง 402"></textarea>
 
-    <div class="item-row">
-      <div>
-        <div class="item-name">นมสดสตรอว์เบอร์รี่</div>
-        <div class="item-price">฿35</div>
-      </div>
-      <div class="qty-controls">
-        <button type="button" class="qty-btn" onclick="updateQty('item_milk', -1)">-</button>
-        <span class="qty-num" id="qty_item_milk">0</span>
-        <button type="button" class="qty-btn" onclick="updateQty('item_milk', 1)">+</button>
+      <div class="total-bar">
+        <div style="font-size: 14px; font-weight: 600; opacity: 0.9;">ยอดชำระเงินรวม (รวมค่าจัดส่ง)</div>
+        <div class="total-price" id="totalDisplay">฿0</div>
+        <button class="submit-btn" id="btnSubmit" onclick="submitOrder()">ยืนยันสั่งซื้อ</button>
       </div>
     </div>
   </div>
 
-  <!-- สถานที่จัดส่งและรายละเอียด -->
-  <div class="card">
-    <div class="card-title">ข้อมูลการจัดส่ง</div>
+  <!-- หน้าต่าง Modal สำหรับเลือกตัวเลือก -->
+  <div class="modal-overlay" id="optionModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">ชื่อเมนู</div>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      
+      <!-- ส่วนตัวเลือก กรีกโยเกิร์ต -->
+      <div id="yogurtOptions">
+        <div class="opt-group">
+          <div class="opt-title">🍓 ผลไม้สด <span class="opt-req" id="fruitSubtitle">(เลือกได้สูงสุด 3 อย่าง)</span></div>
+          <div id="fruitList"></div>
+        </div>
+        
+        <div class="opt-group">
+          <div class="opt-title">🥣 เพิ่มปริมาณกรีกโยเกิร์ต</div>
+          <div class="opt-row">
+            <label style="margin:0; font-weight:600;">+ Original (+29฿)</label>
+            <input type="checkbox" id="extraYogurt" value="29" onchange="calcModalPrice()">
+          </div>
+        </div>
+        
+        <div class="opt-group">
+          <div class="opt-title">🍯 ซอสราด <span class="opt-req">(ฟรีน้ำผึ้ง เลือกซอสอื่นเพิ่มได้)</span></div>
+          <div id="sauceList"></div>
+        </div>
+        
+        <div class="opt-group">
+          <div class="opt-title">🍪 ท็อปปิ้ง <span class="opt-req" id="toppingSubtitle"></span></div>
+          <div id="toppingList"></div>
+        </div>
+      </div>
 
-    <label>ชื่อลูกค้า / ชื่อไลน์:</label>
-    <input type="text" id="custNameInput" placeholder="ระบุชื่อเรียกหรือชื่อไลน์">
+      <!-- ส่วนตัวเลือก เมนูน้ำแบบกำหนดเอง (Tea / Sweetness) -->
+      <div id="customDrinkOptions" style="display:none;">
+        <div class="opt-group">
+          <div class="opt-title">🍵 เบสเครื่องดื่ม</div>
+          <div class="opt-row"><label style="margin:0; cursor:pointer;">Tea (ใส่ชา)</label><input type="radio" name="teaOpt" value="Tea"></div>
+          <div class="opt-row"><label style="margin:0; cursor:pointer;">No Tea (ไม่ใส่ชา)</label><input type="radio" name="teaOpt" value="No Tea"></div>
+        </div>
+        
+        <div class="opt-group">
+          <div class="opt-title">🍯 ระดับความหวาน</div>
+          <div class="opt-row"><label style="margin:0; cursor:pointer;">0% (ไม่หวาน)</label><input type="radio" name="sweetOpt" value="หวาน 0%"></div>
+          <div class="opt-row"><label style="margin:0; cursor:pointer;">25% (หวานน้อย)</label><input type="radio" name="sweetOpt" value="หวาน 25%"></div>
+          <div class="opt-row"><label style="margin:0; cursor:pointer;">50% (หวานปกติ)</label><input type="radio" name="sweetOpt" value="หวาน 50%"></div>
+        </div>
+      </div>
+      
+      <!-- ข้อความสำหรับเมนูที่ไม่ต้องเลือก Add-on -->
+      <div id="simpleNote" style="display:none; text-align:center; padding: 20px 0; color: var(--gray); font-weight: 600;">
+        <!-- ข้อความจะเปลี่ยนอัตโนมัติ -->
+      </div>
 
-    <label>เลือกพื้นที่จัดส่ง:</label>
-    <select id="deliveryZone" onchange="calculateTotal()">
-      <option value="Plum Condo (เฟส 1-3)" data-fee="0">Plum Condo เฟส 1-3 (ส่งป้อมยาม) — ส่งฟรี ฿0</option>
-      <option value="Fresh Alive" data-fee="0">Fresh Alive (ส่งใต้ตึก) — ส่งฟรี ฿0</option>
-      <option value="ซอยภิรมย์" data-fee="20">ซอยภิรมย์ (+20฿ / สั่ง 2 กล่องส่งฟรี)</option>
-      <option value="Be Condo" data-fee="20">Be Condo (+20฿ / สั่ง 2 กล่องส่งฟรี)</option>
-      <option value="Kave Condo" data-fee="20">Kave Condo (+20฿ / สั่ง 2 กล่องส่งฟรี)</option>
-      <option value="ในมอกรุงเทพ" data-fee="20">ในมอกรุงเทพ (+20฿ / สั่ง 2 กล่องส่งฟรี)</option>
-      <option value="Golf Zoom" data-fee="20">Golf Zoom (+20฿ / สั่ง 2 กล่องส่งฟรี)</option>
-      <option value="พื้นที่อื่น" data-fee="30">พื้นที่อื่น (เริ่มต้น 30฿ หรือตามระยะทาง)</option>
-    </select>
-
-    <label>รายละเอียดตึก / ชั้น / ห้อง / ตัวเลือกผลไม้และซอส:</label>
-    <textarea id="orderNote" rows="3" placeholder="เช่น ตึก B ห้อง 402 / ผลไม้: สตรอว์เบอร์รี่ กล้วย กีวี่ / ซอส: นูเทลล่า (+20฿)"></textarea>
-  </div>
-
-  <!-- แถบสรุปยอดและปุ่มสั่งซื้อ -->
-  <div class="summary-bar">
-    <div class="total-title">ยอดชำระเงินรวม (รวมค่าจัดส่ง)</div>
-    <div class="total-price" id="totalDisplay">฿0</div>
-    <button type="button" class="submit-btn" id="btnSubmit" onclick="submitOrder()">กดยืนยันสั่งซื้อ</button>
+      <div class="modal-footer">
+        <button class="add-to-cart-btn" id="modalAddBtn" onclick="confirmAddToCart()">เพิ่มลงตะกร้า - ฿0</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    // ==========================================
-    // ⚙️ เติมข้อมูลระบบของคุณเรียบร้อยแล้ว
-    // ==========================================
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiYwaVJCI61J6Z5h9cODCi22G44F_fLGn4tlBgcTiQSPom5iMxPGKLwbOBCsWbFnqS/exec";
     const MY_LIFF_ID = "2011726372-mFJlY5GT";
-
     let lineProfile = { displayName: '', userId: '-' };
-    const prices = { item_set: 99, item_bowl: 59, item_biscoff: 89, item_roll: 79, item_smoothie: 59, item_milk: 35 };
-    const names = { item_set: 'เซ็ตสุดคุ้ม', item_bowl: 'กรีกโยเกิร์ตโบวล์', item_biscoff: 'Biscoff Fresh', item_roll: 'โรลกรีก', item_smoothie: 'Strawberry Smoothie', item_milk: 'นมสดสตรอว์เบอร์รี่' };
-    const cart = { item_set: 0, item_bowl: 0, item_biscoff: 0, item_roll: 0, item_smoothie: 0, item_milk: 0 };
 
-    // เชื่อมต่อ LINE LIFF SDK
+    const menuItems = [
+      // กรีกโยเกิร์ต
+      { id: 'y1', name: 'กรีกโยเกิร์ตรสดั้งเดิม 1 สกูป', price: 39, img: 'https://i.postimg.cc/W4hy9xrn/Gemini-Generated-Image-7gzdc27gzdc27gzd.jpg', type: 'plain' },
+      { id: 'y2', name: 'Greek Yogurt Bowl', price: 59, img: 'https://i.postimg.cc/2yR8jQmW/LINE-ALBUM-23969-260924-9.jpg', type: 'yogurt' },
+      { id: 'y3', name: 'Biscoff Fresh', price: 89, img: 'https://i.postimg.cc/g01G4VwW/LINE-ALBUM-23969-260924-12.jpg', type: 'yogurt' },
+      { id: 'y4', name: 'เซ็ทสุดคุ้ม กรีก 2 สกูป+ท็อปปิ้ง 2', price: 99, img: 'https://i.postimg.cc/3NrPYNVD/LINE-ALBUM-23969-260924-11.jpg', type: 'set' },
+      { id: 'y5', name: 'โรลกรีกโยเกิร์ตสอดไส้ผลไม้สด', price: 79, img: 'https://i.postimg.cc/sXc3Yvh5/Gemini-Generated-Image-khgc9qkhgc9qkhgc.jpg', type: 'roll' }, // เมนูใหม่
+      
+      // เครื่องดื่ม
+      { id: 'd1', name: 'Strawberry Yogurt Smoothie', price: 59, img: 'https://i.postimg.cc/qqB94qSv/LINE-ALBUM-23969-260924-3.jpg', type: 'drink' },
+      { id: 'd2', name: 'Shine Muscat Tea Smoothie', price: 79, img: 'https://i.postimg.cc/prVgRr4m/LINE-ALBUM-23969-260924-7.jpg', type: 'custom_drink' },
+      { id: 'd3', name: 'Kyoho Grape Tea Smoothie', price: 89, img: 'https://i.postimg.cc/MH52kVG7/LINE-ALBUM-23969-260924-4.jpg', type: 'custom_drink' },
+      { id: 'd4', name: 'ชามะลิผลไม้สด', price: 89, img: 'https://i.postimg.cc/rsBWk0YV/LINE-ALBUM-23969-260924-2.jpg', type: 'custom_drink' },
+      { id: 'd5', name: 'นมสดสตอเบอร์รี่', price: 35, img: 'https://i.postimg.cc/5tsCtkkG/LINE-ALBUM-23969-260924-1.jpg', type: 'drink' }
+    ];
+
+    const fruits = ['สตรอเบอรี่', 'บลูเบอรี่', 'กีวี', 'กล้วย', 'แอปเปิ้ล', 'ส้ม', 'องุ่น'];
+    const sauces = [{n: 'น้ำผึ้ง', p: 0}, {n: 'สตรอเบอรี่', p: 5}, {n: 'เนยถั่ว', p: 15}, {n: 'นูเทลล่า', p: 20}, {n: 'บิสคอฟ', p: 20}];
+    const toppings = ['กราโนล่า', 'คอร์นเฟลก', 'บิสคอฟ', 'โอริโอ้', 'อัลมอนด์'];
+
+    let cart = [];
+    let currentItem = null;
+    let currentModalPrice = 0;
+
     async function initLIFF() {
       if (MY_LIFF_ID && typeof liff !== 'undefined') {
         try {
@@ -169,61 +209,227 @@
             lineProfile = await liff.getProfile();
             document.getElementById('custNameInput').value = lineProfile.displayName;
           }
-        } catch(e) {
-          console.log("LIFF Init Error:", e);
-        }
+        } catch(e) {}
       }
     }
     initLIFF();
 
-    function updateQty(id, delta) {
-      cart[id] = Math.max(0, cart[id] + delta);
-      document.getElementById('qty_' + id).innerText = cart[id];
-      calculateTotal();
+    function renderMenu() {
+      const yContainer = document.getElementById('yogurtMenuContainer');
+      const dContainer = document.getElementById('drinkMenuContainer');
+      
+      menuItems.forEach(item => {
+        const html = `
+          <div class="menu-card">
+            <img src="${item.img}" class="menu-img" alt="${item.name}">
+            <div class="menu-info">
+              <div class="menu-name">${item.name}</div>
+              <div class="menu-price">฿${item.price}</div>
+            </div>
+            <button class="add-btn" onclick="openModal('${item.id}')">+ เลือก</button>
+          </div>
+        `;
+        if (item.type === 'drink' || item.type === 'custom_drink') dContainer.innerHTML += html;
+        else yContainer.innerHTML += html;
+      });
+
+      document.getElementById('fruitList').innerHTML = fruits.map(f => `
+        <div class="opt-row"><label style="margin:0; cursor:pointer;">${f}</label><input type="checkbox" class="fruit-cb" value="${f}" onchange="checkFruitLimit(this)"></div>
+      `).join('');
+      
+      document.getElementById('sauceList').innerHTML = sauces.map((s, i) => {
+        if (s.n === 'น้ำผึ้ง') {
+          return `
+            <div class="opt-row">
+              <label style="margin:0; color:var(--gray);">🍯 ${s.n} (ฟรีทุกออเดอร์)</label>
+              <input type="checkbox" class="sauce-cb" value="${s.n}|${s.p}" checked disabled>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="opt-row">
+              <label style="margin:0; cursor:pointer;">${s.n} <span style="color:#E53935; font-size:12px;">(+${s.p}฿)</span></label>
+              <input type="checkbox" class="sauce-cb" value="${s.n}|${s.p}" onchange="calcModalPrice()">
+            </div>
+          `;
+        }
+      }).join('');
+
+      document.getElementById('toppingList').innerHTML = toppings.map(t => `
+        <div class="opt-row"><label style="margin:0; cursor:pointer;">${t}</label><input type="checkbox" class="topping-cb" value="${t}" onchange="calcModalPrice()"></div>
+      `).join('');
     }
 
-    function calculateTotal() {
-      let subtotal = 0;
-      let totalQty = 0;
-      for (let k in cart) {
-        subtotal += cart[k] * prices[k];
-        totalQty += cart[k];
+    function checkFruitLimit(cb) {
+      // ตั้งค่า limit ตามประเภทเมนู: ถัาเป็น roll ให้เลือกได้แค่ 2 อย่าง นอกนั้น 3
+      let limit = (currentItem && currentItem.type === 'roll') ? 2 : 3;
+      const checkedCount = document.querySelectorAll('.fruit-cb:checked').length;
+      if(checkedCount > limit) {
+        cb.checked = false;
+        alert(`เลือกผลไม้สดได้สูงสุด ${limit} อย่างนะคะ 🍓`);
       }
+    }
+
+    function openModal(id) {
+      currentItem = menuItems.find(m => m.id === id);
+      document.getElementById('modalTitle').innerText = currentItem.name;
+      
+      // รีเซ็ตค่าเวลาเปิด Modal
+      document.querySelectorAll('.fruit-cb').forEach(cb => cb.checked = false);
+      document.querySelectorAll('.topping-cb').forEach(cb => cb.checked = false);
+      document.getElementById('extraYogurt').checked = false;
+      document.querySelectorAll('.sauce-cb:not([disabled])').forEach(cb => cb.checked = false);
+
+      if (currentItem.type === 'drink' || currentItem.type === 'plain') {
+        document.getElementById('yogurtOptions').style.display = 'none';
+        document.getElementById('customDrinkOptions').style.display = 'none';
+        document.getElementById('simpleNote').style.display = 'block';
+        if (currentItem.type === 'drink') {
+           document.getElementById('simpleNote').innerText = 'เครื่องดื่มจะเสิร์ฟตามสูตรของทางร้านค่ะ';
+        } else if (currentItem.type === 'plain') {
+           document.getElementById('simpleNote').innerText = 'เมนูนี้เสิร์ฟแบบดั้งเดิม ไม่มีผลไม้หรือท็อปปิ้งเพิ่มเติมค่ะ';
+        }
+      } else if (currentItem.type === 'custom_drink') {
+        document.getElementById('yogurtOptions').style.display = 'none';
+        document.getElementById('simpleNote').style.display = 'none';
+        document.getElementById('customDrinkOptions').style.display = 'block';
+        
+        document.querySelector('input[name="teaOpt"][value="Tea"]').checked = true;
+        document.querySelector('input[name="sweetOpt"][value="หวาน 25%"]').checked = true;
+      } else {
+        // กลุ่มเมนูโยเกิร์ตที่มี Add-on (yogurt, set, roll)
+        document.getElementById('yogurtOptions').style.display = 'block';
+        document.getElementById('simpleNote').style.display = 'none';
+        document.getElementById('customDrinkOptions').style.display = 'none';
+        
+        // ปรับข้อความจำกัดผลไม้
+        if (currentItem.type === 'roll') {
+           document.getElementById('fruitSubtitle').innerText = '(เลือกได้สูงสุด 2 อย่าง)';
+        } else {
+           document.getElementById('fruitSubtitle').innerText = '(เลือกได้สูงสุด 3 อย่าง)';
+        }
+
+        // ปรับข้อความท็อปปิ้ง
+        if (currentItem.type === 'set') {
+           document.getElementById('toppingSubtitle').innerText = '(เลือกฟรี 2 อย่าง ถัดไป +5฿/อย่าง)';
+        } else {
+           document.getElementById('toppingSubtitle').innerText = '(+5฿/อย่าง)';
+        }
+      }
+      
+      calcModalPrice();
+      document.getElementById('optionModal').style.display = 'flex';
+    }
+
+    function closeModal() { 
+      document.getElementById('optionModal').style.display = 'none'; 
+    }
+
+    function calcModalPrice() {
+      let price = currentItem.price;
+      if (currentItem.type === 'yogurt' || currentItem.type === 'set' || currentItem.type === 'roll') {
+        if(document.getElementById('extraYogurt').checked) price += 29;
+        
+        document.querySelectorAll('.sauce-cb:checked').forEach(cb => {
+           price += parseInt(cb.value.split('|')[1]);
+        });
+        
+        const toppingCount = document.querySelectorAll('.topping-cb:checked').length;
+        if(currentItem.type === 'set') {
+           price += Math.max(0, toppingCount - 2) * 5; // ฟรี 2 อย่างแรก
+        } else {
+           price += toppingCount * 5;
+        }
+      }
+      currentModalPrice = price;
+      document.getElementById('modalAddBtn').innerText = `เพิ่มลงตะกร้า - ฿${price}`;
+    }
+
+    function confirmAddToCart() {
+      let opts = [];
+      if (currentItem.type === 'yogurt' || currentItem.type === 'set' || currentItem.type === 'roll') {
+        const f = Array.from(document.querySelectorAll('.fruit-cb:checked')).map(cb => cb.value);
+        if(f.length > 0) opts.push(`ผลไม้: ${f.join(', ')}`);
+        
+        if(document.getElementById('extraYogurt').checked) opts.push(`+กรีกออริจินัล`);
+        
+        const s = Array.from(document.querySelectorAll('.sauce-cb:checked')).map(cb => cb.value.split('|')[0]);
+        if(s.length > 0) opts.push(`ซอส: ${s.join(', ')}`);
+        
+        const t = Array.from(document.querySelectorAll('.topping-cb:checked')).map(cb => cb.value);
+        if(t.length > 0) opts.push(`ท็อปปิ้ง: ${t.join(', ')}`);
+      } else if (currentItem.type === 'custom_drink') {
+        const tea = document.querySelector('input[name="teaOpt"]:checked').value;
+        const sweet = document.querySelector('input[name="sweetOpt"]:checked').value;
+        opts.push(`เบส: ${tea}`);
+        opts.push(`ความหวาน: ${sweet}`);
+      }
+
+      cart.push({
+        name: currentItem.name,
+        price: currentModalPrice,
+        options: opts.join(' | ')
+      });
+      
+      closeModal();
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartSec = document.getElementById('cartSection');
+      if(cart.length === 0) {
+        cartSec.style.display = 'none';
+        return;
+      }
+      cartSec.style.display = 'block';
+
+      let listHtml = '';
+      let subtotal = 0;
+      cart.forEach((c, i) => {
+        subtotal += c.price;
+        listHtml += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${c.name}</div>
+              <div class="cart-item-opts">${c.options ? c.options : '-'}</div>
+              <button class="remove-btn" onclick="removeFromCart(${i})">🗑️ ลบ</button>
+            </div>
+            <div class="cart-item-price">฿${c.price}</div>
+          </div>
+        `;
+      });
+      document.getElementById('cartList').innerHTML = listHtml;
 
       const zoneSelect = document.getElementById('deliveryZone');
       let baseFee = Number(zoneSelect.options[zoneSelect.selectedIndex].getAttribute('data-fee'));
-
-      // เงื่อนไข: สั่ง 2 กล่องขึ้นไป จัดส่งฟรีในโซน 20 บาท
+      
       let deliveryFee = baseFee;
-      if (baseFee === 20 && totalQty >= 2) {
-        deliveryFee = 0;
-      }
-
-      const grandTotal = subtotal > 0 ? (subtotal + deliveryFee) : 0;
-      document.getElementById('totalDisplay').innerText = '฿' + grandTotal.toLocaleString();
-      return { grandTotal, totalQty, deliveryFee };
+      if (baseFee === 20 && cart.length >= 2) deliveryFee = 0; 
+      
+      const grandTotal = subtotal + deliveryFee;
+      document.getElementById('totalDisplay').innerText = `฿${grandTotal.toLocaleString()} ${deliveryFee > 0 ? `(+ค่าส่ง ${deliveryFee}฿)` : '(ส่งฟรี)'}`;
     }
 
     function submitOrder() {
-      const { grandTotal, totalQty } = calculateTotal();
-      if (totalQty === 0) {
-        alert('กรุณาเลือกเมนูอย่างน้อย 1 รายการค่ะ');
-        return;
-      }
-
       const custName = document.getElementById('custNameInput').value.trim() || lineProfile.displayName || "ลูกค้าทั่วไป";
-
-      let itemsSummary = [];
-      for (let k in cart) {
-        if (cart[k] > 0) itemsSummary.push(names[k] + ' (' + cart[k] + ')');
-      }
+      let orderDetails = cart.map(c => `• ${c.name} ${c.options ? `[${c.options}]` : ''} = ฿${c.price}`).join('\n');
+      
+      const zoneSelect = document.getElementById('deliveryZone');
+      let baseFee = Number(zoneSelect.options[zoneSelect.selectedIndex].getAttribute('data-fee'));
+      let deliveryFee = (baseFee === 20 && cart.length >= 2) ? 0 : baseFee;
+      let subtotal = cart.reduce((sum, c) => sum + c.price, 0);
 
       const payload = {
         customerName: custName,
         lineUserId: lineProfile.userId,
-        deliveryZone: document.getElementById('deliveryZone').value,
-        orderItems: itemsSummary.join(', '),
-        totalAmount: grandTotal,
+        deliveryZone: zoneSelect.value,
+        orderItems: orderDetails,
+        totalAmount: subtotal + deliveryFee,
         note: document.getElementById('orderNote').value
       };
 
@@ -231,28 +437,22 @@
       btn.disabled = true;
       btn.innerText = 'กำลังส่งออเดอร์...';
 
-      // ส่งข้อมูลข้ามเว็บไปยัง Google Apps Script
       fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).then(() => {
-        alert('สั่งซื้อสำเร็จ! บันทึกข้อมูลลงชีตเรียบร้อยแล้วค่ะ');
-        btn.disabled = false;
-        btn.innerText = 'กดยืนยันสั่งซื้อ';
-        if (typeof liff !== 'undefined' && liff.isInClient()) {
-          liff.closeWindow();
-        }
-      }).catch((err) => {
-        alert('บันทึกออเดอร์เรียบร้อยแล้วค่ะ');
-        btn.disabled = false;
-        btn.innerText = 'กดยืนยันสั่งซื้อ';
-        if (typeof liff !== 'undefined' && liff.isInClient()) {
-          liff.closeWindow();
-        }
+        alert('สั่งซื้อสำเร็จ! ร้านรับออเดอร์ของคุณเรียบร้อยแล้วค่ะ');
+        if (typeof liff !== 'undefined' && liff.isInClient()) liff.closeWindow();
+        else location.reload();
+      }).catch(() => {
+        alert('บันทึกออเดอร์เรียบร้อยค่ะ');
+        if (typeof liff !== 'undefined' && liff.isInClient()) liff.closeWindow();
       });
     }
+
+    renderMenu();
   </script>
 </body>
 </html>
