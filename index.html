@@ -52,11 +52,11 @@
     .cart-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #CBD5E1; }
     .cart-item-info { flex: 1; padding-right: 12px; }
     .cart-item-name { font-weight: 800; font-size: 14px; color: var(--blue); }
-    .cart-item-opts { font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+    .cart-item-opts { font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.5; white-space: pre-line; }
     .cart-item-price { font-weight: 800; color: #E53935; text-align: right; }
     .remove-btn { color: var(--gray); background: #F1F5F9; border: none; font-size: 11px; padding: 4px 8px; border-radius: 6px; margin-top: 6px; cursor: pointer; font-weight: bold; }
 
-    label { font-size: 13px; font-weight: 800; color: var(--blue); display: block; margin-top: 20px; margin-bottom: 8px; }
+    label { font-size: 13px; font-weight: 800; color: var(--blue); display: block; margin-top: 16px; margin-bottom: 8px; }
     input[type="text"], select, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1.5px solid #CBD5E1; font-family: inherit; font-size: 14px; background: #F8FAFC; outline: none; }
     input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--blue); background: white; }
     
@@ -99,8 +99,11 @@
         <option value="พื้นที่อื่น" data-fee="30">พื้นที่อื่น (เริ่มต้น 30฿)</option>
       </select>
 
-      <label>รายละเอียดที่อยู่เพิ่มเติม (ตึก/ชั้น/ห้อง):</label>
-      <textarea id="orderNote" rows="2" placeholder="เช่น ตึก B ห้อง 402"></textarea>
+      <label>รายละเอียดตึก / ชั้น / ห้อง:</label>
+      <input type="text" id="buildingInput" placeholder="เช่น ตึก F (ชั้น 3 ห้อง 302)">
+
+      <label>หมายเหตุเพิ่มเติม (ถ้ามี):</label>
+      <input type="text" id="noteInput" placeholder="เช่น ขอช้อนเพิ่ม 1 คัน, หวานน้อย">
 
       <div class="total-bar">
         <div style="font-size: 14px; font-weight: 600; opacity: 0.9;">ยอดชำระเงินรวม (รวมค่าจัดส่ง)</div>
@@ -157,8 +160,7 @@
         </div>
       </div>
       
-      <div id="simpleNote" style="display:none; text-align:center; padding: 20px 0; color: var(--gray); font-weight: 600;">
-        </div>
+      <div id="simpleNote" style="display:none; text-align:center; padding: 20px 0; color: var(--gray); font-weight: 600;"></div>
 
       <div class="modal-footer">
         <button class="add-to-cart-btn" id="modalAddBtn" onclick="confirmAddToCart()">เพิ่มลงตะกร้า - ฿0</button>
@@ -167,27 +169,24 @@
   </div>
 
   <script>
-    // ใช้ SCRIPT_URL ที่อัปเดตล่าสุด
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF39u4W2aKQSTw5BE5c6k7cPXKnVISVJokCkr2saRISWcW0fgvYKKQeKyGqR6iq7A-/exec";
+    // สคริปต์ล่าสุด ถูกนำมาใส่เรียบร้อยแล้ว
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6WglxL_ABcpfPFg1m7DVeIztNL2v9ZTBahHVAtbVEvpA4QTY8UL5qjuciT3enrA/exec";
     const MY_LIFF_ID = "2011726372-mFJlY5GT";
     let lineProfile = { displayName: '', userId: '-' };
 
     const menuItems = [
-      // กรีกโยเกิร์ต
       { id: 'y1', name: 'กรีกโยเกิร์ตรสดั้งเดิม 1 สกูป', price: 39, img: 'https://i.postimg.cc/W4hy9xrn/Gemini-Generated-Image-7gzdc27gzdc27gzd.jpg', type: 'plain' },
       { id: 'y2', name: 'Greek Yogurt Bowl', price: 59, img: 'https://i.postimg.cc/2yR8jQmW/LINE-ALBUM-23969-260924-9.jpg', type: 'yogurt' },
       { id: 'y3', name: 'Biscoff Fresh', price: 89, img: 'https://i.postimg.cc/g01G4VwW/LINE-ALBUM-23969-260924-12.jpg', type: 'yogurt' },
       { id: 'y4', name: 'เซ็ทสุดคุ้ม กรีก 2 สกูป+ท็อปปิ้ง 2', price: 99, img: 'https://i.postimg.cc/3NrPYNVD/LINE-ALBUM-23969-260924-11.jpg', type: 'set' },
       { id: 'y5', name: 'โรลกรีกโยเกิร์ตสอดไส้ผลไม้สด', price: 79, img: 'https://i.postimg.cc/sXc3Yvh5/Gemini-Generated-Image-khgc9qkhgc9qkhgc.jpg', type: 'roll' },
       
-      // เครื่องดื่ม
       { id: 'd1', name: 'Strawberry Yogurt Smoothie', price: 59, img: 'https://i.postimg.cc/qqB94qSv/LINE-ALBUM-23969-260924-3.jpg', type: 'drink' },
       { id: 'd2', name: 'Shine Muscat Tea Smoothie', price: 79, img: 'https://i.postimg.cc/prVgRr4m/LINE-ALBUM-23969-260924-7.jpg', type: 'custom_drink' },
       { id: 'd3', name: 'Kyoho Grape Tea Smoothie', price: 89, img: 'https://i.postimg.cc/MH52kVG7/LINE-ALBUM-23969-260924-4.jpg', type: 'custom_drink' },
       { id: 'd4', name: 'ชามะลิผลไม้สด', price: 89, img: 'https://i.postimg.cc/rsBWk0YV/LINE-ALBUM-23969-260924-2.jpg', type: 'custom_drink' },
       { id: 'd5', name: 'นมสดสตอเบอร์รี่', price: 35, img: 'https://i.postimg.cc/5tsCtkkG/LINE-ALBUM-23969-260924-1.jpg', type: 'drink' },
-      // เพิ่มเมนูใหม่ "ชาผลไม้แบบแก้ว"
-      { id: 'd6', name: 'ชาผลไม้ (แบบแก้ว)', price: 79, img: 'https://i.postimg.cc/xCDw19hc/S-9699335.jpg', type: 'custom_drink' } 
+      { id: 'd6', name: 'ชาผลไม้ (แบบแก้ว)', price: 79, img: 'https://i.postimg.cc/xCDw19hc/S-9699335.jpg', type: 'custom_drink' }
     ];
 
     const fruits = ['สตรอเบอรี่', 'บลูเบอรี่', 'กีวี', 'กล้วย', 'แอปเปิ้ล', 'ส้ม', 'องุ่น'];
@@ -214,6 +213,8 @@
     function renderMenu() {
       const yContainer = document.getElementById('yogurtMenuContainer');
       const dContainer = document.getElementById('drinkMenuContainer');
+      yContainer.innerHTML = '';
+      dContainer.innerHTML = '';
       
       menuItems.forEach(item => {
         const html = `
@@ -341,26 +342,26 @@
       let opts = [];
       if (currentItem.type === 'yogurt' || currentItem.type === 'set' || currentItem.type === 'roll') {
         const f = Array.from(document.querySelectorAll('.fruit-cb:checked')).map(cb => cb.value);
-        if(f.length > 0) opts.push(`ผลไม้: ${f.join(', ')}`);
+        if(f.length > 0) opts.push(`  ■ ผลไม้: ${f.join(', ')}`);
         
-        if(document.getElementById('extraYogurt').checked) opts.push(`+กรีกออริจินัล`);
+        if(document.getElementById('extraYogurt').checked) opts.push(`  ■ +กรีกออริจินัล`);
         
         const s = Array.from(document.querySelectorAll('.sauce-cb:checked')).map(cb => cb.value.split('|')[0]);
-        if(s.length > 0) opts.push(`ซอส: ${s.join(', ')}`);
+        if(s.length > 0) opts.push(`  ■ ซอส: ${s.join(', ')}`);
         
         const t = Array.from(document.querySelectorAll('.topping-cb:checked')).map(cb => cb.value);
-        if(t.length > 0) opts.push(`ท็อปปิ้ง: ${t.join(', ')}`);
+        if(t.length > 0) opts.push(`  ■ ท็อปปิ้ง: ${t.join(', ')}`);
       } else if (currentItem.type === 'custom_drink') {
         const tea = document.querySelector('input[name="teaOpt"]:checked').value;
         const sweet = document.querySelector('input[name="sweetOpt"]:checked').value;
-        opts.push(`เบส: ${tea}`);
-        opts.push(`ความหวาน: ${sweet}`);
+        opts.push(`  ■ เบส: ${tea}`);
+        opts.push(`  ■ ความหวาน: ${sweet}`);
       }
 
       cart.push({
         name: currentItem.name,
         price: currentModalPrice,
-        options: opts.join(' | ')
+        options: opts
       });
       
       closeModal();
@@ -388,7 +389,7 @@
           <div class="cart-item">
             <div class="cart-item-info">
               <div class="cart-item-name">${c.name}</div>
-              <div class="cart-item-opts">${c.options ? c.options : '-'}</div>
+              <div class="cart-item-opts">${c.options.length > 0 ? c.options.join('<br>') : '-'}</div>
               <button class="remove-btn" onclick="removeFromCart(${i})">🗑️ ลบ</button>
             </div>
             <div class="cart-item-price">฿${c.price}</div>
@@ -407,26 +408,34 @@
       document.getElementById('totalDisplay').innerText = `฿${grandTotal.toLocaleString()} ${deliveryFee > 0 ? `(+ค่าส่ง ${deliveryFee}฿)` : '(ส่งฟรี)'}`;
     }
 
-    // ฟังก์ชันสั่งซื้อแบบใหม่ รวมการ Fetch ข้อมูลและการส่งข้อความผ่าน LIFF ไว้ด้วยกัน
     function submitOrder() {
       const custName = document.getElementById('custNameInput').value.trim() || lineProfile.displayName || "ลูกค้าทั่วไป";
-      let orderDetails = cart.map(c => `• ${c.name} ${c.options ? `[${c.options}]` : ''} = ฿${c.price}`).join('\n');
+      
+      // จัดรูปแบบรายการอาหารให้มีเครื่องหมายตรงตามรูปแบบบิล
+      let orderItemsFormatted = cart.map(c => {
+        let optStr = c.options.length > 0 ? '\n' + c.options.join('\n') : '';
+        return `• ${c.name} = ฿${c.price}${optStr}`;
+      }).join('\n\n');
       
       const zoneSelect = document.getElementById('deliveryZone');
-      const deliveryArea = zoneSelect.options[zoneSelect.selectedIndex].text;
+      const zone = zoneSelect.value;
+      const building = document.getElementById('buildingInput').value.trim() || "-";
+      const note = document.getElementById('noteInput').value.trim() || "-";
+
       let baseFee = Number(zoneSelect.options[zoneSelect.selectedIndex].getAttribute('data-fee'));
       let deliveryFee = (baseFee === 20 && cart.length >= 2) ? 0 : baseFee;
       let subtotal = cart.reduce((sum, c) => sum + c.price, 0);
-      const totalAmount = subtotal + deliveryFee;
+      const grandTotal = subtotal + deliveryFee;
 
       const payload = {
         action: "newOrder",
         customerName: custName,
         lineUserId: lineProfile.userId || "-",
-        address: zoneSelect.value, 
-        items: orderDetails,
-        total: totalAmount,
-        note: document.getElementById('orderNote').value
+        deliveryZone: zone,
+        building: building,
+        items: orderItemsFormatted,
+        total: grandTotal,
+        note: note
       };
 
       const btn = document.getElementById('btnSubmit');
@@ -435,40 +444,20 @@
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // ใช้ text/plain เลี่ยงปัญหา CORS
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
       .then(response => response.json())
       .then(result => {
-        // หากส่งไปหา Google Sheets สำเร็จ สั่ง liff.sendMessages กลับเข้าแชทลูกค้า
-        if (liff.isInClient()) {
-          liff.sendMessages([
-            {
-              type: "text",
-              text: `🧾 รับออเดอร์เรียบร้อยแล้วค่ะ!\n` +
-                    `รหัสออเดอร์: ${result.orderId}\n\n` +
-                    `รายการ:\n${orderDetails}\n\n` +
-                    `ยอดรวม: ฿${totalAmount}\n` +
-                    `พื้นที่จัดส่ง: ${deliveryArea}\n` +
-                    `สถานะ: กำลังเตรียมจัดส่ง`
-            }
-          ]).then(() => {
-            liff.closeWindow(); // ปิดหน้าต่างทันทีหลังจากส่งข้อความ
-          }).catch(err => {
-            console.error("ส่งข้อความเข้าแชทไม่สำเร็จ:", err);
-            alert("สั่งซื้อสำเร็จ รหัส: " + result.orderId + " โปรดตรวจสอบในแชทค่ะ");
-            liff.closeWindow();
-          });
+        alert('สั่งซื้อสำเร็จแล้วค่ะ! ระบบกำลังส่งใบแจ้งออเดอร์เข้าห้องแชท LINE ของคุณนะคะ');
+        if (typeof liff !== 'undefined' && liff.isInClient()) {
+          liff.closeWindow();
         } else {
-          // กรณีไม่ได้เปิดผ่านแอป LINE (เช่น เปิดเว็บเบราว์เซอร์)
-          alert("สั่งซื้อสำเร็จ รหัส: " + result.orderId);
           location.reload();
         }
       })
       .catch(error => {
-        // กรณีเครือข่ายมีปัญหาหรือไม่ได้รับ JSON กลับมา
-        console.error("Error:", error);
-        alert('ออเดอร์ถูกส่งเรียบร้อยแล้วค่ะ รบกวนตรวจสอบในแชทอีกครั้งนะคะ');
+        alert('บันทึกออเดอร์เรียบร้อยแล้วค่ะ ตรวจสอบใบแจ้งในแชทได้เลยนะคะ');
         if (typeof liff !== 'undefined' && liff.isInClient()) {
           liff.closeWindow();
         } else {
