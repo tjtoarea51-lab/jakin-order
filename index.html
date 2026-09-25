@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>JAKiN - จากิน</title>
-  <!-- LINE LIFF SDK -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     :root {
@@ -111,7 +110,6 @@
     </div>
   </div>
 
-  <!-- หน้าต่าง Modal สำหรับเลือกตัวเลือก -->
   <div class="modal-overlay" id="optionModal">
     <div class="modal">
       <div class="modal-header">
@@ -119,7 +117,6 @@
         <button class="close-btn" onclick="closeModal()">×</button>
       </div>
       
-      <!-- ส่วนตัวเลือก กรีกโยเกิร์ต -->
       <div id="yogurtOptions">
         <div class="opt-group">
           <div class="opt-title">🍓 ผลไม้สด <span class="opt-req" id="fruitSubtitle">(เลือกได้สูงสุด 3 อย่าง)</span></div>
@@ -145,7 +142,6 @@
         </div>
       </div>
 
-      <!-- ส่วนตัวเลือก เมนูน้ำแบบกำหนดเอง (Tea / Sweetness) -->
       <div id="customDrinkOptions" style="display:none;">
         <div class="opt-group">
           <div class="opt-title">🍵 เบสเครื่องดื่ม</div>
@@ -161,10 +157,8 @@
         </div>
       </div>
       
-      <!-- ข้อความสำหรับเมนูที่ไม่ต้องเลือก Add-on -->
       <div id="simpleNote" style="display:none; text-align:center; padding: 20px 0; color: var(--gray); font-weight: 600;">
-        <!-- ข้อความจะเปลี่ยนอัตโนมัติ -->
-      </div>
+        </div>
 
       <div class="modal-footer">
         <button class="add-to-cart-btn" id="modalAddBtn" onclick="confirmAddToCart()">เพิ่มลงตะกร้า - ฿0</button>
@@ -173,7 +167,8 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiYwaVJCI61J6Z5h9cODCi22G44F_fLGn4tlBgcTiQSPom5iMxPGKLwbOBCsWbFnqS/exec";
+    // ใช้ SCRIPT_URL ที่อัปเดตล่าสุด
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF39u4W2aKQSTw5BE5c6k7cPXKnVISVJokCkr2saRISWcW0fgvYKKQeKyGqR6iq7A-/exec";
     const MY_LIFF_ID = "2011726372-mFJlY5GT";
     let lineProfile = { displayName: '', userId: '-' };
 
@@ -183,14 +178,16 @@
       { id: 'y2', name: 'Greek Yogurt Bowl', price: 59, img: 'https://i.postimg.cc/2yR8jQmW/LINE-ALBUM-23969-260924-9.jpg', type: 'yogurt' },
       { id: 'y3', name: 'Biscoff Fresh', price: 89, img: 'https://i.postimg.cc/g01G4VwW/LINE-ALBUM-23969-260924-12.jpg', type: 'yogurt' },
       { id: 'y4', name: 'เซ็ทสุดคุ้ม กรีก 2 สกูป+ท็อปปิ้ง 2', price: 99, img: 'https://i.postimg.cc/3NrPYNVD/LINE-ALBUM-23969-260924-11.jpg', type: 'set' },
-      { id: 'y5', name: 'โรลกรีกโยเกิร์ตสอดไส้ผลไม้สด', price: 79, img: 'https://i.postimg.cc/sXc3Yvh5/Gemini-Generated-Image-khgc9qkhgc9qkhgc.jpg', type: 'roll' }, // เมนูใหม่
+      { id: 'y5', name: 'โรลกรีกโยเกิร์ตสอดไส้ผลไม้สด', price: 79, img: 'https://i.postimg.cc/sXc3Yvh5/Gemini-Generated-Image-khgc9qkhgc9qkhgc.jpg', type: 'roll' },
       
       // เครื่องดื่ม
       { id: 'd1', name: 'Strawberry Yogurt Smoothie', price: 59, img: 'https://i.postimg.cc/qqB94qSv/LINE-ALBUM-23969-260924-3.jpg', type: 'drink' },
       { id: 'd2', name: 'Shine Muscat Tea Smoothie', price: 79, img: 'https://i.postimg.cc/prVgRr4m/LINE-ALBUM-23969-260924-7.jpg', type: 'custom_drink' },
       { id: 'd3', name: 'Kyoho Grape Tea Smoothie', price: 89, img: 'https://i.postimg.cc/MH52kVG7/LINE-ALBUM-23969-260924-4.jpg', type: 'custom_drink' },
       { id: 'd4', name: 'ชามะลิผลไม้สด', price: 89, img: 'https://i.postimg.cc/rsBWk0YV/LINE-ALBUM-23969-260924-2.jpg', type: 'custom_drink' },
-      { id: 'd5', name: 'นมสดสตอเบอร์รี่', price: 35, img: 'https://i.postimg.cc/5tsCtkkG/LINE-ALBUM-23969-260924-1.jpg', type: 'drink' }
+      { id: 'd5', name: 'นมสดสตอเบอร์รี่', price: 35, img: 'https://i.postimg.cc/5tsCtkkG/LINE-ALBUM-23969-260924-1.jpg', type: 'drink' },
+      // เพิ่มเมนูใหม่ "ชาผลไม้แบบแก้ว"
+      { id: 'd6', name: 'ชาผลไม้ (แบบแก้ว)', price: 79, img: 'https://i.postimg.cc/xCDw19hc/S-9699335.jpg', type: 'custom_drink' } 
     ];
 
     const fruits = ['สตรอเบอรี่', 'บลูเบอรี่', 'กีวี', 'กล้วย', 'แอปเปิ้ล', 'ส้ม', 'องุ่น'];
@@ -261,7 +258,6 @@
     }
 
     function checkFruitLimit(cb) {
-      // ตั้งค่า limit ตามประเภทเมนู: ถัาเป็น roll ให้เลือกได้แค่ 2 อย่าง นอกนั้น 3
       let limit = (currentItem && currentItem.type === 'roll') ? 2 : 3;
       const checkedCount = document.querySelectorAll('.fruit-cb:checked').length;
       if(checkedCount > limit) {
@@ -274,7 +270,6 @@
       currentItem = menuItems.find(m => m.id === id);
       document.getElementById('modalTitle').innerText = currentItem.name;
       
-      // รีเซ็ตค่าเวลาเปิด Modal
       document.querySelectorAll('.fruit-cb').forEach(cb => cb.checked = false);
       document.querySelectorAll('.topping-cb').forEach(cb => cb.checked = false);
       document.getElementById('extraYogurt').checked = false;
@@ -297,19 +292,16 @@
         document.querySelector('input[name="teaOpt"][value="Tea"]').checked = true;
         document.querySelector('input[name="sweetOpt"][value="หวาน 25%"]').checked = true;
       } else {
-        // กลุ่มเมนูโยเกิร์ตที่มี Add-on (yogurt, set, roll)
         document.getElementById('yogurtOptions').style.display = 'block';
         document.getElementById('simpleNote').style.display = 'none';
         document.getElementById('customDrinkOptions').style.display = 'none';
         
-        // ปรับข้อความจำกัดผลไม้
         if (currentItem.type === 'roll') {
            document.getElementById('fruitSubtitle').innerText = '(เลือกได้สูงสุด 2 อย่าง)';
         } else {
            document.getElementById('fruitSubtitle').innerText = '(เลือกได้สูงสุด 3 อย่าง)';
         }
 
-        // ปรับข้อความท็อปปิ้ง
         if (currentItem.type === 'set') {
            document.getElementById('toppingSubtitle').innerText = '(เลือกฟรี 2 อย่าง ถัดไป +5฿/อย่าง)';
         } else {
@@ -336,7 +328,7 @@
         
         const toppingCount = document.querySelectorAll('.topping-cb:checked').length;
         if(currentItem.type === 'set') {
-           price += Math.max(0, toppingCount - 2) * 5; // ฟรี 2 อย่างแรก
+           price += Math.max(0, toppingCount - 2) * 5; 
         } else {
            price += toppingCount * 5;
         }
@@ -415,21 +407,25 @@
       document.getElementById('totalDisplay').innerText = `฿${grandTotal.toLocaleString()} ${deliveryFee > 0 ? `(+ค่าส่ง ${deliveryFee}฿)` : '(ส่งฟรี)'}`;
     }
 
+    // ฟังก์ชันสั่งซื้อแบบใหม่ รวมการ Fetch ข้อมูลและการส่งข้อความผ่าน LIFF ไว้ด้วยกัน
     function submitOrder() {
       const custName = document.getElementById('custNameInput').value.trim() || lineProfile.displayName || "ลูกค้าทั่วไป";
       let orderDetails = cart.map(c => `• ${c.name} ${c.options ? `[${c.options}]` : ''} = ฿${c.price}`).join('\n');
       
       const zoneSelect = document.getElementById('deliveryZone');
+      const deliveryArea = zoneSelect.options[zoneSelect.selectedIndex].text;
       let baseFee = Number(zoneSelect.options[zoneSelect.selectedIndex].getAttribute('data-fee'));
       let deliveryFee = (baseFee === 20 && cart.length >= 2) ? 0 : baseFee;
       let subtotal = cart.reduce((sum, c) => sum + c.price, 0);
+      const totalAmount = subtotal + deliveryFee;
 
       const payload = {
+        action: "newOrder",
         customerName: custName,
-        lineUserId: lineProfile.userId,
-        deliveryZone: zoneSelect.value,
-        orderItems: orderDetails,
-        totalAmount: subtotal + deliveryFee,
+        lineUserId: lineProfile.userId || "-",
+        address: zoneSelect.value, 
+        items: orderDetails,
+        total: totalAmount,
         note: document.getElementById('orderNote').value
       };
 
@@ -439,16 +435,45 @@
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // ใช้ text/plain เลี่ยงปัญหา CORS
         body: JSON.stringify(payload)
-      }).then(() => {
-        alert('สั่งซื้อสำเร็จ! ร้านรับออเดอร์ของคุณเรียบร้อยแล้วค่ะ');
-        if (typeof liff !== 'undefined' && liff.isInClient()) liff.closeWindow();
-        else location.reload();
-      }).catch(() => {
-        alert('บันทึกออเดอร์เรียบร้อยค่ะ');
-        if (typeof liff !== 'undefined' && liff.isInClient()) liff.closeWindow();
+      })
+      .then(response => response.json())
+      .then(result => {
+        // หากส่งไปหา Google Sheets สำเร็จ สั่ง liff.sendMessages กลับเข้าแชทลูกค้า
+        if (liff.isInClient()) {
+          liff.sendMessages([
+            {
+              type: "text",
+              text: `🧾 รับออเดอร์เรียบร้อยแล้วค่ะ!\n` +
+                    `รหัสออเดอร์: ${result.orderId}\n\n` +
+                    `รายการ:\n${orderDetails}\n\n` +
+                    `ยอดรวม: ฿${totalAmount}\n` +
+                    `พื้นที่จัดส่ง: ${deliveryArea}\n` +
+                    `สถานะ: กำลังเตรียมจัดส่ง`
+            }
+          ]).then(() => {
+            liff.closeWindow(); // ปิดหน้าต่างทันทีหลังจากส่งข้อความ
+          }).catch(err => {
+            console.error("ส่งข้อความเข้าแชทไม่สำเร็จ:", err);
+            alert("สั่งซื้อสำเร็จ รหัส: " + result.orderId + " โปรดตรวจสอบในแชทค่ะ");
+            liff.closeWindow();
+          });
+        } else {
+          // กรณีไม่ได้เปิดผ่านแอป LINE (เช่น เปิดเว็บเบราว์เซอร์)
+          alert("สั่งซื้อสำเร็จ รหัส: " + result.orderId);
+          location.reload();
+        }
+      })
+      .catch(error => {
+        // กรณีเครือข่ายมีปัญหาหรือไม่ได้รับ JSON กลับมา
+        console.error("Error:", error);
+        alert('ออเดอร์ถูกส่งเรียบร้อยแล้วค่ะ รบกวนตรวจสอบในแชทอีกครั้งนะคะ');
+        if (typeof liff !== 'undefined' && liff.isInClient()) {
+          liff.closeWindow();
+        } else {
+          location.reload();
+        }
       });
     }
 
@@ -456,70 +481,3 @@
   </script>
 </body>
 </html>
-// ใส่ URL ที่ได้จาก Apps Script
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF39u4W2aKQSTw5BE5c6k7cPXKnVISVJokCkr2saRISWcW0fgvYKKQeKyGqR6iq7A-/exec";
-
-// ฟังก์ชันสำหรับส่งข้อมูลเมื่อลูกค้ากดยืนยันสั่งซื้อ
-async function sendOrderToSheets(order) {
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8" // จำเป็นต้องใช้ text/plain เพื่อไม่ให้ติดปัญหา CORS
-      },
-      body: JSON.stringify({
-        customerName: order.name,        // ชื่อลูกค้า / Display Name ใน LINE
-        deliveryArea: order.area,        // พื้นที่จัดส่ง (เช่น หอพัก มข.)
-        itemsSummary: order.summary,     // รายการอาหารและท็อปปิ้ง
-        totalAmount: order.totalPrice,   // ยอดรวม (ตัวเลข เช่น 79)
-        paymentMethod: order.payment,    // เช่น โอนเงิน / เงินสด
-        paymentStatus: "รอตรวจสอบ",
-        orderStatus: "กำลังปรุง",
-        userId: order.userId || "",      // LINE User ID (ถ้ามี)
-        note: order.note || ""           // หมายเหตุเพิ่มเติม
-      })
-    });
-
-    const result = await response.json();
-    if (result.status === "success") {
-      alert("สั่งซื้อสำเร็จ! รหัสออเดอร์: " + result.orderId);
-      // สามารถสั่ง liff.closeWindow() หรือ redirect ไปหน้าขอบคุณได้ที่นี่
-    }
-  } catch (error) {
-    console.error("ส่งออเดอร์ไม่สำเร็จ:", error);
-    alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง");
-  }
-}
-// หลังจากยิงเข้า Google Sheets (fetch SCRIPT_URL) สำเร็จ
-fetch(SCRIPT_URL, {
-  method: "POST",
-  headers: { "Content-Type": "text/plain;charset=utf-8" },
-  body: JSON.stringify(orderData)
-})
-.then(res => res.json())
-.then(result => {
-  if (result.status === "success") {
-    // 💬 สั่งส่งข้อความสรุปออเดอร์เข้าห้องแชทของลูกค้าทันที
-    if (liff.isInClient()) {
-      liff.sendMessages([
-        {
-          type: "text",
-          text: `🧾 รับออเดอร์เรียบร้อยแล้วค่ะ!\n` +
-                `รหัสออเดอร์: ${result.orderId}\n` +
-                `รายการ: ${orderData.itemsSummary}\n` +
-                `ยอดรวม: ฿${orderData.totalAmount}\n` +
-                `พื้นที่จัดส่ง: ${orderData.deliveryArea}\n` +
-                `สถานะ: กำลังเตรียมจัดส่ง`
-        }
-      ]).then(() => {
-        // เมื่อส่งข้อความเข้าแชทแล้ว สั่งปิดหน้าต่าง LIFF ทันที
-        liff.closeWindow();
-      }).catch(err => {
-        console.error("ส่งข้อความเข้าแชทไม่สำเร็จ:", err);
-        liff.closeWindow();
-      });
-    } else {
-      alert("บันทึกออเดอร์เรียบร้อยแล้ว! รหัส: " + result.orderId);
-    }
-  }
-});
